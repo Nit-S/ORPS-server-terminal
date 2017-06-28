@@ -1,31 +1,22 @@
 <?php
-$_station_id="ghy";
-$_vehical_type="";
+
+header("Content-Type: application/json; charset=UTF-8");
+
+$station_id="ghy";
 
 require "res/inc/connect.php";
 
+$queryStation=$conn->prepare("SELECT * from STATION_PARKING_INFO where station_id = ?");
+$queryStation->bind_param('s',$station_id);
+$queryStation->execute();
+$queryStation->bind_result(
+    $row['station_id'],$row['station_name'],$row['station_class'],
+    $row['tot_2w_park'],$row['avail_2w_park'],$row['occ_2w_park'],$row['res_2w_park'],
+    $row['tot_4w_park'],$row['avail_4w_park'],$row['occ_4w_park'],$row['res_4w_park']
+    );
 
-
-$_station_status_query=$_conn->prepare("select * from station_parking_info where station_id=?");
-$_station_status_query->bind_param("s",$_station_id);
-
-$_result=mysqli_query($_conn,$_station_status_query);
-
-if(mysqli_num_rows($_result)>0){
-	while($_row=$_result->fetch_assoc()){
-        echo "station name : ".$_row["station_name"]."\n";
-
-if($_vehical_type="2w"){
-    echo "available two wheeler space : ".$_row["avail_2w_park"];
-
-}elseif ($_vehical_type="4w") {
-    echo "available four wheeler space : ".$_row["avail_4w_park"];
-
+while($queryStation->fetch()){
+    echo json_encode($row);  
 }
-}
-}else{
-	echo "0 results";
-}
-
-
 ?>
+
