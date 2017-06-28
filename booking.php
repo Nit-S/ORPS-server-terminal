@@ -1,9 +1,7 @@
 <?php
-header("Content-Type: application/json; charset=UTF-8");
 require "res/inc/connect.php";
 
-$station_id="ghy";
-$vehicle_type="2w";
+
 
 // this function takes in station id and vehical tpe and frezes a spot as booked in the server
 
@@ -119,8 +117,96 @@ if($_conn->affected_rows){
 
 
 
-function getRegistration(){
-	
+function storeVehicle($mconn,$mvehicleNo,$mvehicleType,$mvehicleName,$mvehicleColor){
+$insVehicleQuery=$mconn->prepare("INSERT INTO vehicle values(?,?,?,?)");
+if($insVehicleQuery->errno){
+	 die('fatal error : '.$insVehicleQuery->error);
 }
+$insVehicleQuery->bind_param('ssss',$mvehicleNo,$mvehicleType,$mvehicleName,$mvehicleColor);
+if($insVehicleQuery->errno){
+	 die('fatal error : '.$insVehicleQuery->error);
+}
+$insVehicleQuery->execute();
+if($insVehicleQuery->errno){
+	 die('fatal error : '.$insVehicleQuery->error);
+}
+$insVehicleQuery->close();
+}
+
+
+function getRegistration($mconn,$mcustName,$mcustNumber,$mcustEmail,$mvehicleNo,$mvehicleType,$mvehicleName,$mvehicleColor,$mstationId){
+ storeVehicle($mconn,$mvehicleNo,$mvehicleType,$mvehicleName,$mvehicleColor);
+
+if(freezeAvailablity($mconn,$mstationId,$mvehicleType)){
+	$slotDetails=actualSlotBook($mconn,$mstationId,$mvehicleType);
+	if($slotDetails==array()){
+		echo "negative returns";
+	}else{
+		$regNo=$mstationId.$mvehicleNo.$mvehicleType.$slotDetails['slot_fpno'].date('YmdHi');
+
+		$registerQuery=$mconn->prepare("INSERT INTO registrations (reg_no,	cust_name,cust_number,cust_email,vehicle_no,station_id,slot_fpno) VALUES(?,?,?,?,?,?,?)");
+
+		if($registerQuery->errno){
+	    die('fatal error : '.$registerQuery->error);
+       }
+  		$registerQuery->bind_param(
+			'ssisssi',
+			$regNo,
+			$mcustName,
+			$mcustNumber,
+			$mcustEmail,
+			$mvehicleNo,
+			$mstationId,
+			$slotDetails['slot_fpno']
+			);
+  		if($registerQuery->errno){
+	    die('fatal error : '.$registerQuery->error);
+       }
+		$registerQuery->execute();
+				if($registerQuery->errno){
+	    die('fatal error : '.$registerQuery->error);
+       }
+		$registerQuery->close();
+		return $regNo;
+}
+}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+$station_id="ghy";
+$vehicle_type="2w";
+
+
+
+
+
+
+
+
+
+
+
+$key= getRegistration($conn,"sakshi shrivastav",9899643241,"Cnitigya.sharma12@gmail.com","DL7C3333",$vehicle_type,"tuv 500","matt black",$station_id);
+
+$getRegQuery=$conn->query("SELECT * FROM `registrations` WHERE reg_no='".$key."'");
+		if($conn->errno){
+	    die('fatal error : '.$conn->error);
+       }
+if($getRegQuery->num_rows==1){
+        if($row=$getRegQuery->fetch_assoc()){
+		echo json_encode($row);
+	}
+	$getRegQuery->close();
+	}
 
 ?>
