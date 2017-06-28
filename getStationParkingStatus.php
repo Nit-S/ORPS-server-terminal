@@ -14,12 +14,10 @@ $queryStation->bind_param('s',$station_id);
 if($queryStation->errno){
     die('fatal error : '.$queryStation->error);
 }
-
 $queryStation->execute();
 if($queryStation->errno){
     die('fatal error : '.$queryStation->error);
 }
-
 $queryStation->bind_result(
     $row['station_id'],$row['station_name'],$row['station_class'],
     $row['tot_2w_park'],$row['avail_2w_park'],$row['occ_2w_park'],$row['res_2w_park'],
@@ -28,10 +26,9 @@ $queryStation->bind_result(
 if($queryStation->errno){
     die('fatal error : '.$queryStation->error);
 }
-
 if($queryStation->fetch()){
     echo json_encode($row);  
 }
-
+$conn->close();
 ?>
 
