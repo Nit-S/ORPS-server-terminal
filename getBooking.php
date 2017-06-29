@@ -1,4 +1,5 @@
 <?php
+header("Content-Type: application/json; charset=UTF-8");
 require "res/inc/connect.php";
 
 
@@ -170,6 +171,9 @@ if(freezeAvailablity($mconn,$mstationId,$mvehicleType)){
 		return $regNo;
 }
 }
+else {
+	return false;
+}
 }
 
 
@@ -194,14 +198,28 @@ $vehicle_type="2w";
 
 
 
-
+$conn->query("LOCK TABLES registrations write , slot_detail write , station_ parking_info write");
+$conn->query("START TRANSACTION");
 
 $key= getRegistration($conn,"sakshi shrivastav",9899643241,"Cnitigya.sharma12@gmail.com","DL7C3333",$vehicle_type,"tuv 500","matt black",$station_id);
 
+if($key){
+	$conn->query("commit");
+	echo "possitive response";
+}else{
+	$conn->query("rollback");
+	echo "negative response";
+}
+$conn->query("UNLOCK TABLES");
+
+
+
+$conn->query("LOCK TABLES registrations read");
 $getRegQuery=$conn->query("SELECT * FROM `registrations` WHERE reg_no='".$key."'");
 		if($conn->errno){
 	    die('fatal error : '.$conn->error);
        }
+       $conn->query("UNLOCK TABLES");
 if($getRegQuery->num_rows==1){
         if($row=$getRegQuery->fetch_assoc()){
 		echo json_encode($row);

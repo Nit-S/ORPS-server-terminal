@@ -6,6 +6,9 @@ $station_id="ndls";
 
 require "res/inc/connect.php";
 
+
+$conn->query("LOCK TABLES station_parking_info read");
+
 $queryStation=$conn->prepare("SELECT * from STATION_PARKING_INFO where station_id = ?");
 if($queryStation->errno){
     die('fatal error : '.$queryStation->error);
@@ -26,8 +29,15 @@ $queryStation->bind_result(
 if($queryStation->errno){
     die('fatal error : '.$queryStation->error);
 }
+    $conn->query("UNLOCK TABLES");
+    
 if($queryStation->fetch()){
     echo json_encode($row);  
+}else{
+
+
+echo "negative responsde";
+
 }
 $conn->close();
 ?>
