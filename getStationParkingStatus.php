@@ -29,7 +29,6 @@ $queryStation->bind_result(
 if($queryStation->errno){
     die('fatal error : '.$queryStation->error);
 }
-    $conn->query("UNLOCK TABLES");
     
 if($queryStation->fetch()){
     echo json_encode($row);  
@@ -39,6 +38,8 @@ if($queryStation->fetch()){
 echo "negative responsde";
 
 }
+$queryStation->close();
+    $conn->query("UNLOCK TABLES");
 $conn->close();
 ?>
 

@@ -182,13 +182,14 @@ else {
 
 
 
-
-
-
-
-
-$station_id="ghy";
-$vehicle_type="2w";
+$custName="nitigya sharma";
+$custNumber=9785463215;
+$custEmail="nitigya.sharma12@gmail.com";
+$vehicleNo="DL 7C 3333";
+$vehicleType="2w";
+$vehicleName="tuv 500";
+$vehicleColor="matt black";
+$stationId="ghy";
 
 
 
@@ -201,7 +202,7 @@ $vehicle_type="2w";
 $conn->query("LOCK TABLES registrations write , slot_detail write , station_ parking_info write");
 $conn->query("START TRANSACTION");
 
-$key= getRegistration($conn,"sakshi shrivastav",9899643241,"Cnitigya.sharma12@gmail.com","DL7C3333",$vehicle_type,"tuv 500","matt black",$station_id);
+$key= getRegistration($conn,$custName,$custNumber,$custEmail,$vehicleNo,$vehicleType,$vehicleName,$vehicleColor,$stationId);
 
 if($key){
 	$conn->query("commit");
@@ -211,6 +212,7 @@ if($key){
 	echo "negative response";
 }
 $conn->query("UNLOCK TABLES");
+
 
 
 
