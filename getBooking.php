@@ -143,7 +143,7 @@ if(freezeAvailablity($mconn,$mstationId,$mvehicleType)){
 	if($slotDetails==array()){
 		echo "negative returns";
 	}else{
-		$regNo=$mstationId.$mvehicleNo.$mvehicleType.$slotDetails['slot_fpno'].date('YmdHi');
+		$regNo=$mstationId.$mvehicleType.$slotDetails['slot_fpno'].date('YmdHi');
 
 		$registerQuery=$mconn->prepare("INSERT INTO registrations (reg_no,	cust_name,cust_number,cust_email,vehicle_no,station_id,slot_fpno) VALUES(?,?,?,?,?,?,?)");
 
