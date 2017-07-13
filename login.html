@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>index</title>
+	<script type="text/javascript" src="res\js\behind.js"></script>
+</head>
+<body>
+<h1 align="center">Onilne Railways Parking System</h1>
+<div id="login" align="center">
+Sta_ID
+<select id="station">
+	<option value="">Please select one</option>
+	<option value="ghy">guwahati-ghy</option>
+	<option value="ndls">newDelhi-ndls</option>
+</select><br>
+<input type="text" id="eid" placeholder="ID:"/><br>
+<input type="text" id="epw" placeholder="PASSWORD:"><br>
+<input type="button" name="val" value="login" onclick="login()">
+</div>
+<div id="message" align="center" ></div>
+<div id="main" hidden align="center">
+
+
+==========================================================================
+<div id="stationinfo">
+<script>
+ setInterval(updateParking, 1000);
+</script>
+<p id="time"></p>
+<p id="currStation"></p>
+<p id="currEmployee"></p>
+<table align="center">
+
+	<tr>
+		<th>STATUS</th>
+		<th>Two Wheelers</th>
+		<th>Four Wheelers</th>
+	</tr>
+
+	<tr>
+		<td>Total</td>
+		<td id="2wTotal"></td>
+		<td id="4wTotal"></td>
+	</tr>
+
+	<tr>
+		<td>Available</td>
+		<td id="2wAvail"></td>
+		<td id="4wAvail"></td>
+	</tr>
+
+	<tr>
+		<td>Occupied</td>
+		<td id="2wOccupied"></td>
+		<td id="4wOccupied"></td>
+	</tr>
+
+	<tr>
+		<td>reserved</td>
+		<td id="2wReserv"></td>
+		<td id="4wReserv"></td>
+	</tr>
+
+</table>
+
+</div>
+==========================================================================
+<div id ="getBooking">
+	<input type="text" name="custname" id="custname" placeholder="Name:" /><br>
+	<input type="number" name="custnum" id="custnum" placeholder="Number:" min="0000000000" maxlength="10" /><br>
+	<input type="email" name="custemail" id="custemail" placeholder="E-Mail:" /><br>
+	<input  name="vehicleNo" id="vehicleno" placeholder="No. Plate:" /><br>
+	<select name="vehicleType" id="vehicletype">
+		<option value="">Please select one</option>
+		<option value="2w">Two Wheelers</option>
+		<option value="4w">Four Wheelers</option>
+	</select><br>
+	<input type="text" name="vehiclename" id="vehiclename" placeholder="Vehicle Name"/><br>
+	<input type="text" name="vehiclecolor" id="vehiclecolor" placeholder="colour"/><br>
+	<input type="button" name="getbooking" value="Book" onclick="getBooking()"/>
+	<input type="button" name="reset" value="reset" onclick="reset()"/>
+	<p  id="demo"></p>
+</div>
+==========================================================================
+<div id="generatecheckout">3</div>
+==========================================================================
+<div id="update">4</div>
+==========================================================================
+<div id="cancel">5</div>
+==========================================================================
+
+</div>
+</body>
+</html>
