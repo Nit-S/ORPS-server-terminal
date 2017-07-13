@@ -2,7 +2,7 @@
 
 header("Content-Type: application/json; charset=UTF-8");
 
-$station_id="ndls";
+$station_id=$_REQUEST['stationid'];
 
 require "res/inc/connect.php";
 
@@ -33,9 +33,7 @@ if($queryStation->errno){
 if($queryStation->fetch()){
     echo json_encode($row);  
 }else{
-
-
-echo "negative responsde";
+echo '{"station_id":"NULL","station_name":"NULL","station_class":"NULL","tot_2w_park":"NULL","avail_2w_park":"NULL","occ_2w_park":"NULL","res_2w_park":"NULL","tot_4w_park":"NULL","avail_4w_park":"NULL","occ_4w_park":"NULL","res_4w_park":"NULL"}';
 
 }
 $queryStation->close();

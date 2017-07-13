@@ -105,7 +105,7 @@ $slotQuery->fetch();
 $slotQuery->close();
 
 $_conn->query(
-	"UPDATE slot_detail SET status_id='yellow'
+	"UPDATE slot_detail SET status_id='YELLOW'
 	 WHERE station_id = '".$row['station_id']."' AND vehicle_type = '".$row['vehicle_type']."' AND slot_fpno = '".$row['slot_fpno']."'"
 	);
 	if($_conn->errno){
@@ -178,6 +178,16 @@ else {
 
 
 
+$custName=$_REQUEST['custname'];
+$custNumber=$_REQUEST['custnum'];
+$custEmail=$_REQUEST['custemail'];
+$vehicleNo=$_REQUEST['vehicleno'];
+$vehicleType=$_REQUEST['vehicletype'];
+$vehicleName=$_REQUEST['vehiclename'];
+$vehicleColor=$_REQUEST['vehiclecolor'];
+$stationId=$_REQUEST['stationid'];
+
+
 
 
 
@@ -190,7 +200,6 @@ $vehicleType="2w";
 $vehicleName="tuv 500";
 $vehicleColor="matt black";
 $stationId="ghy";
-
 
 
 
