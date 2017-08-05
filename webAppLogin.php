@@ -1,6 +1,5 @@
 <?php
 
-header("Content-Type: application/json; charset=UTF-8");
 require "res/inc/connect.php";
 
 $stationid=$_REQUEST['stationid'];
@@ -12,9 +11,9 @@ if($conn->errno){
 	echo "Fatlal error : ".$conn->error;
 }
 if($result->num_rows){
-	echo "possitive";
+	echo "pass";
 }else{
-	echo "negative";
+	echo "fail";
 }
 
-?>
+?> 

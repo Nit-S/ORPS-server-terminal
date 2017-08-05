@@ -2,7 +2,7 @@
 
 header("Content-Type: application/json; charset=UTF-8");
 
-$station_id=$_REQUEST['stationid'];
+ $station_id=$_REQUEST['stationid'];
 
 require "res/inc/connect.php";
 

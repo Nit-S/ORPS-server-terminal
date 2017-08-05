@@ -3,8 +3,8 @@
 header("Content-Type: application/json; charset=UTF-8");
 require "res/inc/connect.php";
 
-function storeCheckout($mconn,$mregkey){
-$mconn->query("lock tables registrations write , station_parking_info write ,slot_detail write , vehicle read");
+function storeCheckout($mconn,$mregkey,$mcurrEmp){
+$mconn->query("lock tables registrations write ,station_parking_info write ,slot_detail write , vehicle read");
 $mconn->query("START TRANSACTION");
 
 $getRegQuery=$mconn->query("SELECT * FROM `registrations` WHERE reg_no='".$mregkey."'");
@@ -13,74 +13,77 @@ $getRegQuery=$mconn->query("SELECT * FROM `registrations` WHERE reg_no='".$mregk
        }
 if($getRegQuery->num_rows==1){
         if($row=$getRegQuery->fetch_assoc()){
+        	// check something to do after reciving the details...
 	}
 	$getRegQuery->close();
 	}
 
 $mconn->query("UPDATE slot_detail set status_id ='GREEN' where station_id='".$row['station_id']."' and vehicle_type= (select vehicle_type from vehicle where vehicle_no='".$row['vehicle_no']."') and slot_fpno='".$row['slot_fpno']."'");
 
-
-$getVehicleTypeQuery=$mconn->query("select * from vehicle where vehicle_no='".$row['vehicle_no']."'");
-if($getVehicleTypeQuery->errno){
-	die('fatal error : '.$getVehicleTypeQuery->error);
-}
-if($getVehicleTypeQuery->num_rows){
-	$res=$getVehicleTypeQuery->fetch_assoc();
-}
-if($res['vehicle_type']=="2w"){
-			$_conn->query(
-				"UPDATE STATION_PARKING_INFO
-				SET avail_2w_park=".($row['avail_2w_park']+1).",
-				occ_2w_park=".($row['res_2w_park']-1)."
-				WHERE station_id='".$_station_id."'"
-				);
-			if($_conn->errno){
-				die('fatal error : '.$_conn->error);
-			}
-		}
-
-	}elseif ($res['vehicle_type']=="4w") {
-			$_conn->query(
-				"UPDATE STATION_PARKING_INFO
-				SET avail_4w_park=".($row['avail_4w_park']+1).",
-				occ_4w_park=".($row['res_4w_park']-1)."
-				where station_id='".$_station_id."'"
-				);
-			if($_conn->errno){
-				die('fatal error : '.$_conn->error);
-			}
-		}
-	}
-
-
-
-
 if($mconn->errno){
 	die ("fatal error : ".$mconn->error);
 }
 
-$mconn->query("UPDATE registrations set chkout_time='".date('Y-m-d H:i:s')."',  chkout_emp_userid=(SELECT emp_userid from emp where emp_work_start<'".time('Y-m-d H:i:s')."' and emp_work_end>'".time('Y-m-d H:i:s')."') WHERE reg_no='".$mregkey."' And chkin_time IS NOT NULL and chkout_time IS NULL");
+
+
+$getVehicleTypeQuery=$mconn->query("select * from vehicle where vehicle_no='".$row['vehicle_no']."'");
+
+if($mconn->errno){
+	die('fatal error : '.$mconn->error);
+}
+if($getVehicleTypeQuery->num_rows){
+	$res=$getVehicleTypeQuery->fetch_assoc();
+}
+
+
+if($res['vehicle_type']=="2w"){
+			$mconn->query(
+				// debug error take ststion psrking info and use in a variablke other than row
+
+				"UPDATE STATION_PARKING_INFO
+				SET occ_2w_park = occ_2w_park - 1,
+				avail_2w_park = avail_2w_park + 1
+				WHERE station_id='".$row['station_id']."'"
+				);
+			if($mconn->errno){
+				die('fatal error : '.$mconn->error);
+			}
+		}elseif ($res['vehicle_type']=="4w") {
+			$mconn->query(
+				"UPDATE STATION_PARKING_INFO
+				SET occ_4w_park = occ_4w_park - 1,
+				avail_4w_park = avail_4w_park + 1
+				where station_id='".$row['station_id']."'"
+				);
+			if($mconn->errno){
+				die('fatal error : '.$mconn->error);
+			}
+		}
+
+
+$mconn->query("UPDATE registrations set chkout_time='".date('Y-m-d H:i:s')."',commit_status ='complete' , chkout_emp_userid='".$mcurrEmp."' WHERE reg_no='".$mregkey."' And chkout_time IS NULL and commit_status ='active'");
+
 if($mconn->errno){
 	die ("fatal error : ".$mconn->error);
 }
 if($mconn->affected_rows){
 	$mconn->query("commit");
-	echo "possitive response";
+	echo "possitive";
 }else{
 	$mconn->query("rollback");
-	echo "negative response";
+	echo "negative";
 }
 $mconn->query("unlock tables");
 
 }
 
 
+$key=$_REQUEST['key'];
+$currEmp=$_REQUEST['emp'];
 
 
 
-$key="ghy2w100002201706301336";
-
-storeChecout($conn,$key);
+storeCheckout($conn,$key,$currEmp);
 
 
 

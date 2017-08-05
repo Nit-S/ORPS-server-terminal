@@ -2,7 +2,8 @@
 <html>
 <head>
 	<title>index</title>
-	<script type="text/javascript" src="res\js\behind.js"></script>
+	<script type="text/javascript" src="res\js\main.js"></script>
+	<script type="text/javascript" src="res\js\instascan.min.js"></script>
 </head>
 <body>
 <h1 align="center">Onilne Railways Parking System</h1>
@@ -16,10 +17,10 @@ Sta_ID
 <input type="text" id="eid" placeholder="ID:"/><br>
 <input type="text" id="epw" placeholder="PASSWORD:"><br>
 <input type="button" name="val" value="login" onclick="login()">
+<div id="demo"></div>
 </div>
 <div id="message" align="center" ></div>
 <div id="main" hidden align="center">
-
 
 ==========================================================================
 <div id="stationinfo">
@@ -67,9 +68,9 @@ Sta_ID
 ==========================================================================
 <div id ="getBooking">
 	<input type="text" name="custname" id="custname" placeholder="Name:" /><br>
-	<input type="number" name="custnum" id="custnum" placeholder="Number:" min="0000000000" maxlength="10" /><br>
+	<input type="Number" name="custnum" id="custnum" placeholder="Number:" minlength="10" /><br>
 	<input type="email" name="custemail" id="custemail" placeholder="E-Mail:" /><br>
-	<input  name="vehicleNo" id="vehicleno" placeholder="No. Plate:" /><br>
+	<input type="text" name="vehicleNo" id="vehicleno" placeholder="No. Plate:" /><br>
 	<select name="vehicleType" id="vehicletype">
 		<option value="">Please select one</option>
 		<option value="2w">Two Wheelers</option>
@@ -82,11 +83,12 @@ Sta_ID
 	<p  id="demo"></p>
 </div>
 ==========================================================================
-<div id="generatecheckout">3</div>
+<div id="scan">
+	 <video id="preview" hidden ></video>
+     <input type="button" value="scan" onclick="scan()"/>
+</div>
 ==========================================================================
-<div id="update">4</div>
-==========================================================================
-<div id="cancel">5</div>
+<div id="cancel inputing the key or scanner">5</div>
 ==========================================================================
 
 </div>

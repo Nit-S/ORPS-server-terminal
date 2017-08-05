@@ -1,4 +1,5 @@
 <?php
+
 header("Content-Type: application/json; charset=UTF-8");
 require "res/inc/connect.php";
 
@@ -118,7 +119,28 @@ if($_conn->affected_rows){
 
 
 
-function storeVehicle($mconn,$mvehicleNo,$mvehicleType,$mvehicleName,$mvehicleColor){
+
+function getRegistration($mconn,$mcustName,$mcustNumber,$mcustEmail,$mvehicleNo,$mvehicleType,$mvehicleName,$mvehicleColor,$mstationId){
+
+
+
+
+
+$checkVehicleStoreQuery=$mconn->query("SELECT * from vehicle where vehicle_no = '".$mvehicleNo."'");
+if($mconn->errno){
+	echo "Fatal error : ".$mconn->error;
+}
+if($checkVehicleStoreQuery->num_rows==1){
+	{
+		if($vehicle=$checkVehicleStoreQuery->fetch_assoc()){
+			$mvehicleType=$vehicle['vehicle_type'];
+			$mvehicleName=$vehicle['vehicle_name'];
+			$mvehicleColor=$vehicle['vehicle_color'];
+		}
+	}
+// something could be done
+
+}else{
 $insVehicleQuery=$mconn->prepare("INSERT INTO vehicle values(?,?,?,?)");
 if($insVehicleQuery->errno){
 	 die('fatal error : '.$insVehicleQuery->error);
@@ -135,17 +157,19 @@ $insVehicleQuery->close();
 }
 
 
-function getRegistration($mconn,$mcustName,$mcustNumber,$mcustEmail,$mvehicleNo,$mvehicleType,$mvehicleName,$mvehicleColor,$mstationId){
- storeVehicle($mconn,$mvehicleNo,$mvehicleType,$mvehicleName,$mvehicleColor);
+
+
+
+
+
 
 if(freezeAvailablity($mconn,$mstationId,$mvehicleType)){
 	$slotDetails=actualSlotBook($mconn,$mstationId,$mvehicleType);
 	if($slotDetails==array()){
-		echo "negative returns";
 	}else{
 		$regNo=$mstationId.$mvehicleType.$slotDetails['slot_fpno'].date('YmdHi');
 
-		$registerQuery=$mconn->prepare("INSERT INTO registrations (reg_no,	cust_name,cust_number,cust_email,vehicle_no,station_id,slot_fpno) VALUES(?,?,?,?,?,?,?)");
+		$registerQuery=$mconn->prepare("INSERT INTO registrations (reg_no,	cust_name,cust_number,cust_email,vehicle_no,station_id,slot_fpno,commit_status) VALUES(?,?,?,?,?,?,?,'initialised')");
 
 		if($registerQuery->errno){
 	    die('fatal error : '.$registerQuery->error);
@@ -192,18 +216,6 @@ $stationId=$_REQUEST['stationid'];
 
 
 
-$custName="nitigya sharma";
-$custNumber=9785463215;
-$custEmail="nitigya.sharma12@gmail.com";
-$vehicleNo="DL 7C 3333";
-$vehicleType="2w";
-$vehicleName="tuv 500";
-$vehicleColor="matt black";
-$stationId="ghy";
-
-
-
-
 
 
 
@@ -215,10 +227,8 @@ $key= getRegistration($conn,$custName,$custNumber,$custEmail,$vehicleNo,$vehicle
 
 if($key){
 	$conn->query("commit");
-	echo "possitive response";
 }else{
 	$conn->query("rollback");
-	echo "negative response";
 }
 $conn->query("UNLOCK TABLES");
 
@@ -230,12 +240,16 @@ $getRegQuery=$conn->query("SELECT * FROM `registrations` WHERE reg_no='".$key."'
 		if($conn->errno){
 	    die('fatal error : '.$conn->error);
        }
-       $conn->query("UNLOCK TABLES");
+$conn->query("UNLOCK TABLES");
+
+
 if($getRegQuery->num_rows==1){
         if($row=$getRegQuery->fetch_assoc()){
-		echo json_encode($row);
+		echo json_encode($row);// booking ocuured and the details are printed
 	}
 	$getRegQuery->close();
+	}else{
+		echo "negative";// booking didn't occured
 	}
 
 ?>
