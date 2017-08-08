@@ -1,37 +1,68 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>index</title>
+	<title>Railway Parking</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" type="image/gif" href="res/img/indian-railway-logo11.png" />
+
 	<script type="text/javascript" src="res\js\main.js"></script>
-	<script type="text/javascript" src="res\js\instascan.min.js"></script>
+
+	 <link href="res/bootstrap-3.3.6-dist/bootstrap-3.3.6-dist/css/bootstrap.min.css" rel="stylesheet">
+	 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+  <style type="text/css">
+#body {
+    background-image: url("res/img/TrainBg11.jpg");
+    background-position: left top;
+    background-attachment: fixed;
+}
+  </style>
+
+
 </head>
-<body>
-<h1 align="center">Onilne Railways Parking System</h1>
-<div id="login" align="center">
-Sta_ID
-<select id="station">
-	<option value="">Please select one</option>
+<body id="body">
+<div class=" w3-container w3-padding-large" align="center">
+<div class="w3-card-4 w3-padding-large col-md-10 w3-display-topmiddle w3-blue">
+<h1 id="heading" align="center">Onilne Railways Parking System</h1>
+</div>
+<br><br>
+<div class="w3-card w3-padding-large col-md-6 w3-display-middle w3-white" id="login" align="center">
+<label>Station id</label>
+<select style="width:70%" id="station" class="w3-select">
+	<option value="">Select your station</option>
 	<option value="ghy">guwahati-ghy</option>
 	<option value="ndls">newDelhi-ndls</option>
 </select><br>
-<input type="text" id="eid" placeholder="ID:"/><br>
-<input type="text" id="epw" placeholder="PASSWORD:"><br>
-<input type="button" name="val" value="login" onclick="login()">
-<div id="demo"></div>
-</div>
-<div id="message" align="center" ></div>
-<div id="main" hidden align="center">
+<input type="text" class="w3-input w3-animate-input" style="width:50%"  id="eid" placeholder="ID:"/><br>
+<input type="password" class="w3-input w3-animate-input" style="width:50%" id="epw" placeholder="PASSWORD:"><br>
+<BUTTON class="w3-button w3-block w3-teal" style="width:20%"  onclick="login()" >LOGIN</BUTTON>
 
-==========================================================================
-<div id="stationinfo">
+</div>
+
+<div id="message" align="center" ></div>
+
+
+
+
+<div class=" col-md-11 w3-display-middle" id="main" hidden align="center">
+<div class="row">
+<div class="w3-card w3-padding-16 w3-margin w3-white col-md-3" id="stationinfo">
 <script>
  setInterval(updateParking, 1000);
 </script>
-<p id="time"></p>
-<p id="currStation"></p>
-<p id="currEmployee"></p>
-<table align="center">
+<div class="w3-container w3-teal">
+  <h2>Station Parking Status</h2>
+</div>
+<div class="w3-display-container">
+<div class="w3-display-topleft" id="currStation"></div>
+<div class="w3-display-topright" id="currEmployee"></div>
+</div>
 
+<div class="w3-display-container">
+<p id="time"></p>
+<table align="center">
 	<tr>
 		<th>STATUS</th>
 		<th>Two Wheelers</th>
@@ -63,33 +94,45 @@ Sta_ID
 	</tr>
 
 </table>
-
 </div>
-==========================================================================
-<div id ="getBooking">
-	<input type="text" name="custname" id="custname" placeholder="Name:" /><br>
-	<input type="Number" name="custnum" id="custnum" placeholder="Number:" minlength="10" /><br>
-	<input type="email" name="custemail" id="custemail" placeholder="E-Mail:" /><br>
-	<input type="text" name="vehicleNo" id="vehicleno" placeholder="No. Plate:" /><br>
-	<select name="vehicleType" id="vehicletype">
+</div>
+<div class="w3-card w3-padding-16 w3-margin w3-white col-md-8" id ="getBooking">
+<div class="w3-container w3-teal">
+  <h2>Booking Form</h2>
+</div>
+<form class="w3-container">
+<select style="width:70%" class="w3-select" name="vehicleType" id="vehicletype">
 		<option value="">Please select one</option>
 		<option value="2w">Two Wheelers</option>
 		<option value="4w">Four Wheelers</option>
-	</select><br>
-	<input type="text" name="vehiclename" id="vehiclename" placeholder="Vehicle Name"/><br>
-	<input type="text" name="vehiclecolor" id="vehiclecolor" placeholder="colour"/><br>
-	<input type="button" name="getbooking" value="Book" onclick="getBooking()"/>
-	<input type="button" name="reset" value="reset" onclick="reset()"/>
-	<p  id="demo"></p>
+	</select>
+	<div class="w3-row w3-padding-large">
+	<div class="w3-card w3-col s5 w3-center w3-margin w3-padding-large w3-light-grey" >
+	<label>Personal Info</label>
+	<input type="text" class="w3-input w3-animate-input" style="width:50%" name="custname" id="custname" placeholder="Name:"/>
+	<input type="Number" class="w3-input w3-animate-input" style="width:50%" name="custnum" id="custnum" placeholder="Number:" minlength="10" />
+	<input type="email" class="w3-input w3-animate-input" style="width:50%" name="custemail" id="custemail" placeholder="E-Mail:" />
+	</div>
+	<div class="w3-card w3-col s5 w3-center w3-margin w3-padding-large w3-light-grey" >
+	<label>Vehicle Info</label>
+	<input type="text" class="w3-input w3-animate-input" style="width:50%" name="vehicleNo" id="vehicleno" placeholder="No. Plate:" />
+	<input type="text" class="w3-input w3-animate-input" style="width:50%" name="vehiclename" id="vehiclename" placeholder="Vehicle Name"/>
+	<input type="text" class="w3-input w3-animate-input" style="width:50%" name="vehiclecolor" id="vehiclecolor" placeholder="colour"/>
+	</div>
+	</div>
+	<button class="w3-button  w3-teal" style="width:30%" name="getbooking" onclick="getBooking()" >Book</button>
+	<button class="w3-button  w3-teal" style="width:30%" name="reset" onclick="reset()">reset</button>
+
+	<p id="demo"></p>
+	</form>
 </div>
-==========================================================================
-<div id="scan">
-	 <video id="preview" hidden ></video>
-     <input type="button" value="scan" onclick="scan()"/>
 </div>
-==========================================================================
-<div id="cancel inputing the key or scanner">5</div>
-==========================================================================
+
+</div>
+
+
+
+
 
 </div>
 </body>

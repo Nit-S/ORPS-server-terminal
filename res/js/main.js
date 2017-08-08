@@ -25,21 +25,23 @@ function login(){
 				alert("This employee is not authorised for the station, TRY AGAIN!!..");
 				abort;
 			}else if (xhttp.responseText.trim()==='pass') {
+				    document.getElementById("body").style.backgroundImage = "url('/parking/res/img/parking.jpg')" ; 
 					station=document.getElementById("station").value;
 					user=document.getElementById("eid").value;
 					password=document.getElementById("epw").value;
 
 				document.getElementById("login").style.display = "none";
 				document.getElementById("main").style.display = "block";
-				document.getElementById("currStation").innerHTML = "logged in at :"+station;
+				document.getElementById("currEmployee").innerHTML = user;
+				document.getElementById("currStation").innerHTML = station;
 				alert("logged in at :"+station);
 			}
 		}
 		else if(this.status==404){
-			document.getElementById("demo").innerHTML="please try again!!";
+			document.getElementById("message").innerHTML="please try again!!";
 		}
 		else if(this.status==403){
-			document.getElementById("demo").innerHTML="please try again!!";
+			document.getElementById("message").innerHTML="please try again!!";
 		}
 	};
 	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
@@ -76,6 +78,8 @@ function updateParking() {
 
 
 function getBooking(){
+
+
 	var custname=document.getElementById("custname").value;
 	var custnum=document.getElementById("custnum").value;
 	var custemail=document.getElementById("custemail").value;
@@ -106,26 +110,28 @@ function getBooking(){
 
 
 
-
+	
 	var getbook = new XMLHttpRequest();
 	getbook.open("POST","getBooking.php",true);
 	getbook.onreadystatechange = function(){
 		if(this.readyState == 4 && this.status == 200){
+			if(getbook.responseText.trim()==="negative"){
+				alert("parking cant be done");
+		}else{
 			var bookqr = JSON.parse(getbook.responseText);
-			document.getElementById("demo").innerHTML = getbook.responseText;
-			var myWindow = window.open("", "MsgWindow", "width=200,height=100");
-            myWindow.document.write("<p>"+getbook.responseText+"</p>");
+			console.log(bookqr.reg_no);
+			var ReciptWindow = window.open("/parking/Recipt.php?key="+bookqr.reg_no+"&name="+bookqr.cust_name+"&number="+bookqr.cust_number+"&station="+bookqr.station_id+"&carno="+bookqr.vehicle_no+"&slot="+bookqr.slot_fpno+"", "QRWindow", "width=600,height=750,top=20,left=150");
+			
+			console.log(bookqr.station_id);
+    		document.getElementById("custname").value="";
+			document.getElementById("custnum").value="";
+			document.getElementById("custemail").value="";
+			document.getElementById("vehicleno").value="";
+			document.getElementById("vehicletype").value="";
+			document.getElementById("vehiclename").value="";
+			document.getElementById("vehiclecolor").value="";
 
-
-    document.getElementById("custname").value="";
-	document.getElementById("custnum").value="";
-	document.getElementById("custemail").value="";
-	document.getElementById("vehicleno").value="";
-	document.getElementById("vehicletype").value="";
-	document.getElementById("vehiclename").value="";
-	document.getElementById("vehiclecolor").value="";
-
-
+}
 
 		}
 	}
@@ -148,19 +154,4 @@ function reset(){
 
 }
 
-function scan(){
-	document.getElementById('preview').style.display='block';
-	 let scanner = new Instascan.Scanner({ video: document.getElementById('preview') });
-      scanner.addListener('scan', function (content) {
-        console.log(content+" kya dekh rahi ho");
-      });
-      Instascan.Camera.getCameras().then(function (cameras) {
-        if (cameras.length > 0) {
-          scanner.start(cameras[0]);
-        } else {
-          console.error('No cameras found.');
-        }
-      }).catch(function (e) {
-        console.error(e);
-      });
-}
+
