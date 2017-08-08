@@ -1,1 +1,1 @@
-SERVER for the application
+SERVER and WebAPP terminal for the application

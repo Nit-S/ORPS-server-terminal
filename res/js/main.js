@@ -1,18 +1,15 @@
 function login(){
-	station=document.getElementById("station").value;
-	user=document.getElementById("eid").value;
-	password=document.getElementById("epw").value;
 
 
-	if (station == "") {
+	if (document.getElementById("station").value === "") {
         alert("Station details required");
         abort;
     }
-    if (user == "") {
+    if (document.getElementById("eid").value === "") {
         alert("username has to be filled");
         abort;
     }
-    if (password == "") {
+    if (document.getElementById("epw").value === "") {
         alert("please provide the password");
         abort;
     }
@@ -23,25 +20,32 @@ function login(){
 	xhttp.open('POST','webAppLogin.php',true);
 	xhttp.onreadystatechange = function(){
 		if(this.readyState==4 && this.status==200){
-			if(xhttp.responseText=="negative"){
+			console.log(xhttp.responseText);
+			if(xhttp.responseText.trim()	==='fail'){
 				alert("This employee is not authorised for the station, TRY AGAIN!!..");
 				abort;
-			}else if (xhttp.responseText=="possitive") {
-				document.getElementById("login").style.display = "none"
-				document.getElementById("main").style.display = "block"
-				document.getElementById("currStation").innerHTML = "logged in at :"+station;
+			}else if (xhttp.responseText.trim()==='pass') {
+				    document.getElementById("body").style.backgroundImage = "url('/parking/res/img/parking.jpg')" ; 
+					station=document.getElementById("station").value;
+					user=document.getElementById("eid").value;
+					password=document.getElementById("epw").value;
+
+				document.getElementById("login").style.display = "none";
+				document.getElementById("main").style.display = "block";
+				document.getElementById("currEmployee").innerHTML = user;
+				document.getElementById("currStation").innerHTML = station;
 				alert("logged in at :"+station);
 			}
 		}
 		else if(this.status==404){
-			document.getElementById("demo").innerHTML="please try again!!";
+			document.getElementById("message").innerHTML="please try again!!";
 		}
 		else if(this.status==403){
-			document.getElementById("demo").innerHTML="please try again!!";
+			document.getElementById("message").innerHTML="please try again!!";
 		}
 	};
 	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-	xhttp.send("stationid="+station+"&empid="+user+"&emppw="+password);
+	xhttp.send("stationid="+document.getElementById("station").value+"&empid="+document.getElementById("eid").value+"&emppw="+document.getElementById("epw").value);
 }
 
 
@@ -74,6 +78,8 @@ function updateParking() {
 
 
 function getBooking(){
+
+
 	var custname=document.getElementById("custname").value;
 	var custnum=document.getElementById("custnum").value;
 	var custemail=document.getElementById("custemail").value;
@@ -104,26 +110,28 @@ function getBooking(){
 
 
 
-
+	
 	var getbook = new XMLHttpRequest();
-	getbook.open("POST","getBooking.php",false);
+	getbook.open("POST","getBooking.php",true);
 	getbook.onreadystatechange = function(){
 		if(this.readyState == 4 && this.status == 200){
+			if(getbook.responseText.trim()==="negative"){
+				alert("parking cant be done");
+		}else{
 			var bookqr = JSON.parse(getbook.responseText);
-			document.getElementById("demo").innerHTML = getbook.responseText;
-			var myWindow = window.open("", "MsgWindow", "width=200,height=100");
-            myWindow.document.write("<p>"+getbook.responseText+"</p>");
+			console.log(bookqr.reg_no);
+			var ReciptWindow = window.open("/parking/Recipt.php?key="+bookqr.reg_no+"&name="+bookqr.cust_name+"&number="+bookqr.cust_number+"&station="+bookqr.station_id+"&carno="+bookqr.vehicle_no+"&slot="+bookqr.slot_fpno+"", "QRWindow", "width=600,height=750,top=20,left=150");
+			
+			console.log(bookqr.station_id);
+    		document.getElementById("custname").value="";
+			document.getElementById("custnum").value="";
+			document.getElementById("custemail").value="";
+			document.getElementById("vehicleno").value="";
+			document.getElementById("vehicletype").value="";
+			document.getElementById("vehiclename").value="";
+			document.getElementById("vehiclecolor").value="";
 
-
-    document.getElementById("custname").value="";
-	document.getElementById("custnum").value="";
-	document.getElementById("custemail").value="";
-	document.getElementById("vehicleno").value="";
-	document.getElementById("vehicletype").value="";
-	document.getElementById("vehiclename").value="";
-	document.getElementById("vehiclecolor").value="";
-
-
+}
 
 		}
 	}
@@ -145,3 +153,5 @@ function reset(){
 	document.getElementById("vehiclecolor").value="";
 
 }
+
+

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Scanner</title>
+    <script type="text/javascript" src="res/js/instascan.min.js"></script>
+<link rel="icon" type="image/gif" href="res/img/indian-railway-logo11.png" />
+
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  </head>
+  <body bgcolor="#a1a1a1">
+  <h1 align="center">Parking Entry</h1>
+  <div class="w3-display-middle" align="center">
+    <video id="preview" align="center"></video>
+    </div>
+    <script type="text/javascript">
+      let scanner = new Instascan.Scanner({ video: document.getElementById('preview') });
+      scanner.addListener('scan', function (content) {
+        console.log(content);// do task to perform
+
+
+
+    var data=JSON.parse(content);
+    
+    var scanner = new XMLHttpRequest();
+    if(data.type==="chkin"){
+      scanner.open('POST','chkin.php',true);
+      }else if(data.type==="chkout"){
+        scanner.open('POST','chkout.php',true);
+      }else{
+      alert('response error');
+      }
+      scanner.onreadystatechange = function(){
+      if(this.readyState == 4 && this.status == 200){
+        if(scanner.responseText.trim()==="possitive"){
+          if(data.type==="chkin"){
+          alert("checked-in");
+          }else if(data.type==="chkout"){
+            alert("checked-out");
+          }else{
+          alert('response error for chk');
+          }
+        }else if(scanner.responseText.trim()==="negative"){
+          alert("already checked in,checked-out or booking cancelled");
+        }else{
+          alert("response error");
+        }
+      }
+    }
+      scanner.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    scanner.send("key="+data.key+"&emp="+user);
+
+
+
+
+
+
+
+      });
+      Instascan.Camera.getCameras().then(function (cameras) {
+        if (cameras.length > 0) {
+          scanner.start(cameras[0]);
+        } else {
+          console.error('No cameras found.');
+        }
+      }).catch(function (e) {
+        console.error(e);
+      });
+    </script>
+  </body>
+</html>
