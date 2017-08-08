@@ -143,7 +143,7 @@ function getBooking(){
 
 }
 
-function reset(){
+function EmptyData(){
 	document.getElementById("custname").value="";
 	document.getElementById("custnum").value="";
 	document.getElementById("custemail").value="";
