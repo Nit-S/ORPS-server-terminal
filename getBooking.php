@@ -212,6 +212,15 @@ $vehicleColor=$_REQUEST['vehiclecolor'];
 $stationId=$_REQUEST['stationid'];
 
 
+// $custName="nitigya sharma";
+// $custNumber="9711102172";
+// $custEmail="a@b.com";
+// $vehicleNo="de57d9f5";
+// $vehicleType="2w";
+// $vehicleName="bhai di gaddi";
+// $vehicleColor="white";
+// $stationId="ghy";
+
 
 
 
