@@ -5,6 +5,8 @@ header("Content-Type: application/json; charset=UTF-8");
 require "res/inc/connect.php";
 
 function showBooking($mconn,$mregKey){
+
+$mconn->query("lock tables registrations read");
 $getRegQuery=$mconn->query("SELECT * FROM `registrations` WHERE reg_no='".$mregKey."'");
 		if($mconn->errno){
 	    die('fatal error : '.$conn->error);
@@ -15,11 +17,11 @@ if($getRegQuery->num_rows==1){
 	}
 	$getRegQuery->close();
 	}
+	$mconn->query("unlock tables");
+
 }
 
-// $key=$_REQUEST['key'];
-
-$key="ghy2w10001201708041456";
+$key=$_REQUEST['key'];
 
 showBooking($conn,$key);
 

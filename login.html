@@ -87,9 +87,14 @@
 </select><br>
 <input type="text" class="w3-input w3-animate-input" style="width:50%"  id="eid" placeholder="ID:"/><br>
 <input type="password" class="w3-input w3-animate-input" style="width:50%" id="epw" placeholder="PASSWORD:"><br>
-<BUTTON class="w3-button w3-block w3-teal" style="width:20%"  onclick="login()">LOGIN</BUTTON>
-<BUTTON class="w3-button w3-block w3-teal" style="width:20%"  onclick="">SCAN</BUTTON>
-
+<div class="row" align="center">
+<div class="col-md-6" align="center">
+<button class="w3-button w3-block w3-teal" style="width:50%"  onclick="login()">LOGIN</button>
+</div>
+<div class="col-md-6" align="center">
+<button class="w3-button w3-block w3-teal" style="width:50%"  onclick="">SCAN</button>
+</div>
+</div>
 </div>
 
 <div id="message" align="center" ></div>
@@ -177,7 +182,7 @@
 	<input type="text" class="w3-input w3-animate-input" style="width:50%" name="vehiclecolor" id="vehiclecolor" placeholder="colour"/>
 	</div>
 	</div>
-	<button class="w3-button  w3-teal" style="width:30%" name="getbooking" onclick="getBooking()" >Book</button>
+	<button class="w3-button  w3-teal" style="width:30%" name="getbooking" onclick="getBooking()">Book</button>
 	<button class="w3-button  w3-teal" style="width:30%" name="reset" onclick="reset()">reset</button>
 
 	</div>
