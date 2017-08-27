@@ -68,20 +68,18 @@ if($mconn->errno){
 }
 if($mconn->affected_rows){
 	$mconn->query("commit");
-	echo "possitive response";
+	echo "positive";
 }else{
 	$mconn->query("rollback");
-	echo "negative response";
+	echo "negative";
 }
 $mconn->query("unlock tables");
 
 }
 
 
-// $key=$_REQUEST['key'];
+ $key=$_REQUEST['key'];
 
-
-$key="ghy2w10001201708041454";
 
 storeCheckout($conn,$key);
 
